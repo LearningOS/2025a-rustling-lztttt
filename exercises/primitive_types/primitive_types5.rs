@@ -1,7 +1,7 @@
 // primitive_types5.rs
 //
 // Destructure the `cat` tuple so that the println will work.
-//
+//元组
 // Execute `rustlings hint primitive_types5` or use the `hint` watch subcommand
 // for a hint.
 

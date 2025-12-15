@@ -4,17 +4,24 @@
 // implement this trait, consider for a moment what it means to 'append "Bar"'
 // to a vector of strings.
 //
+// 您的任务是为字符串向量实现 `AppendBar` Trait。
+// 为了实现这个 Trait，请思考一下“将 'Bar' 追加到字符串向量”的含义。
 // No boiler plate code this time, you can do this!
 //
 // Execute `rustlings hint traits2` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
 
 trait AppendBar {
     fn append_bar(self) -> Self;
 }
 
 // TODO: Implement trait `AppendBar` for a vector of strings.
+impl AppendBar for Vec<String> {
+    fn append_bar(mut self) -> Self {
+        self.push(String::from("Bar"));
+        self
+    }
+}
 
 #[cfg(test)]
 mod tests {

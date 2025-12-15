@@ -20,8 +20,8 @@ fn main() {
     } else {
         println!("Neither alphabetic nor numeric!");
     }
-
-    let your_character = '@';// Finish this line like the example! What's your favorite character?
+    // is_alphabetic 是 Rust 中 char 类型自带的一个方法
+    let your_character = '🤗';// Finish this line like the example! What's your favorite character?
     // Try a letter, try a number, try a special character, try a character
     // from a different language than your own, try an emoji!
     if your_character.is_alphabetic() {

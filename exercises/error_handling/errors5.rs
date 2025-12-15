@@ -19,17 +19,28 @@
 // What can we use to describe both errors? In other words, is there a trait
 // which both errors implement?
 //
+// 这个练习使用了我们在课程后期才会学到的一些概念，比如 `Box` 和 `From` 特征。
+// 目前不要求您理解它们的细节，但如果您愿意可以提前阅读。
+// 暂时可以将 `Box<dyn ???>` 类型视为“我想要任何实现了 ??? 特征的类型”，
+// 考虑到 Rust 对运行时安全的一贯标准，这可能看起来有些宽松！
+//
+// 简而言之，Box 的这种特定用途适用于您想要拥有一个值，并且只关心它是一个
+// 实现了特定特征的类型的情况。为此，Box 被声明为 Box<dyn Trait> 类型，
+// 其中 Trait 是编译器在该上下文中所查找的特征。对于本练习，该上下文是
+// Result 中可以返回的潜在错误。
+//
+// 我们可以用什么来描述这两种错误？换句话说，是否有这两种错误都实现的特征？
 // Execute `rustlings hint errors5` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
+
 
 use std::error;
 use std::fmt;
 use std::num::ParseIntError;
 
 // TODO: update the return type of `main()` to make this compile.
-fn main() -> Result<(), Box<dyn ???>> {
+fn main() -> Result<(), Box<dyn error::Error>> {
     let pretend_user_input = "42";
     let x: i64 = pretend_user_input.parse()?;
     println!("output={:?}", PositiveNonzeroInteger::new(x)?);
