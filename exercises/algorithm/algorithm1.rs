@@ -2,7 +2,7 @@
 	single linked list merge
 	This problem requires you to merge two ordered singly linked lists into one ordered singly linked list
 */
-// I AM NOT DONE
+// I AM  DONE
 
 use std::fmt::{self, Display, Formatter};
 use std::ptr::NonNull;
@@ -69,14 +69,52 @@ impl<T> LinkedList<T> {
             },
         }
     }
-	pub fn merge(list_a:LinkedList<T>,list_b:LinkedList<T>) -> Self
+    pub fn merge(list_a: LinkedList<T>, list_b: LinkedList<T>) -> Self
+    where 
+        T: PartialOrd
 	{
-		//TODO
-		Self {
-            length: 0,
-            start: None,
-            end: None,
+
+        let mut res = Self::new();
+        res.length = list_a.length + list_b.length;
+        let mut p_a = list_a.start;
+        let mut p_b = list_b.start;
+        let mut current_last: Option<NonNull<Node<T>>> = None;
+        while p_a.is_some() || p_b.is_some() {
+            let next_node_ptr = match (p_a, p_b) {
+                (Some(node_a), Some(node_b)) => {
+                    if unsafe { node_a.as_ref().val <= node_b.as_ref().val } {
+                        p_a = unsafe { node_a.as_ref().next };
+                        node_a
+                    } else {
+                        p_b = unsafe { node_b.as_ref().next };
+                        node_b
+                    }
+                }
+                (Some(node_a), None) => {
+                    p_a = unsafe { node_a.as_ref().next };
+                    node_a
+                }
+                (None, Some(node_b)) => {
+                    p_b = unsafe { node_b.as_ref().next };
+                    node_b
+                }
+                (None, None) => break,
+            };
+            unsafe {
+                match current_last {
+                    None => {
+                        res.start = Some(next_node_ptr);
+                    }
+                    Some(mut last_ptr) => {
+                        last_ptr.as_mut().next = Some(next_node_ptr);
+                    }
+                }
+                current_last = Some(next_node_ptr);
+                next_node_ptr.as_ptr().as_mut().unwrap().next = None;
+            }
         }
+        res.end = current_last;
+        res
 	}
 }
 

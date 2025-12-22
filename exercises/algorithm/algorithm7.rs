@@ -3,43 +3,31 @@
 	This question requires you to use a stack to achieve a bracket match
 */
 
-// I AM NOT DONE
+// I AM DONE
 #[derive(Debug)]
 struct Stack<T> {
 	size: usize,
 	data: Vec<T>,
 }
 impl<T> Stack<T> {
-	fn new() -> Self {
-		Self {
-			size: 0,
-			data: Vec::new(),
-		}
-	}
-	fn is_empty(&self) -> bool {
-		0 == self.size
-	}
-	fn len(&self) -> usize {
-		self.size
-	}
-	fn clear(&mut self) {
-		self.size = 0;
-		self.data.clear();
-	}
-	fn push(&mut self, val: T) {
-		self.data.push(val);
-		self.size += 1;
-	}
-	fn pop(&mut self) -> Option<T> {
-		// TODO
-		None
-	}
-	fn peek(&self) -> Option<&T> {
-		if 0 == self.size {
-			return None;
-		}
-		self.data.get(self.size - 1)
-	}
+    fn push(&mut self, val: T) {
+        self.data.push(val);
+        self.size += 1;
+    }
+    fn pop(&mut self) -> Option<T> {
+        if self.size > 0 {
+            self.size -= 1;
+            self.data.pop()
+        } else {
+            None
+        }
+    } 
+    fn peek(&self) -> Option<&T> {
+        if 0 == self.size {
+            return None;
+        }
+        self.data.get(self.size - 1)
+    }
 	fn peek_mut(&mut self) -> Option<&mut T> {
 		if 0 == self.size {
 			return None;
@@ -67,6 +55,15 @@ impl<T> Stack<T> {
 		}
 		iterator
 	}
+	fn new() -> Self {
+        Self {
+            size: 0,
+            data: Vec::new(),
+        }
+    }
+    fn is_empty(&self) -> bool {
+        0 == self.size
+    }
 }
 struct IntoIter<T>(Stack<T>);
 impl<T: Clone> Iterator for IntoIter<T> {
@@ -98,13 +95,33 @@ impl<'a, T> Iterator for IterMut<'a, T> {
 		self.stack.pop()
 	}
 }
-
 fn bracket_match(bracket: &str) -> bool
 {
-	//TODO
-	true
+	let mut stack = Stack::new();
+		
+		for c in bracket.chars() {
+			match c {
+				'(' | '[' | '{' => stack.push(c),
+				')' => {
+					if stack.pop() != Some('(') {
+						return false;
+					}
+				}
+				']' => {
+					if stack.pop() != Some('[') {
+						return false;
+					}
+				}
+				'}' => {
+					if stack.pop() != Some('{') {
+						return false;
+					}
+				}
+				_ => {}
+			}
+		}
+		stack.is_empty()
 }
-
 #[cfg(test)]
 mod tests {
 	use super::*;
